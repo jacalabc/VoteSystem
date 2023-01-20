@@ -1,111 +1,182 @@
 <?php
-$dsn="mysql:host=localhost;charset=utf8;dbname=vote";
-$pdo= new PDO($dsn,'root','');
+date_default_timezone_set("Asia/Taipei");
 session_start();
 
+class DB{
+    protected $dsn="mysql:host=localhost;charset=utf8;dbname=vote";
+    protected $table;
+    protected $pdo;
+    public $type=[
+                1=>'健康新知',
+                2=>'菸害防治',
+                3=>'癌症防治',
+                4=>'慢性病防治'
+            ];
+
+    public function __construct($table)
+    {
+        $this->table=$table;
+        $this->pdo=new PDO($this->dsn,'root','');
+    }
+
+
+    public function find($id){
+        $sql="select * from $this->table ";
+        
+        if(is_array($id)){
+            $tmp=$this->arrayToSqlArray($id);
+
+            $sql = $sql . " where " .join(" && ",$tmp);
+
+        }else{
+            $sql = $sql . " where `id`='$id'";
+        }
+
+        return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+    }
+    public function all(...$arg){
+        $sql="select * from $this->table ";
+        
+        if(isset($arg[0])){
+            if(is_array($arg[0])){
+                $tmp=$this->arrayToSqlArray($arg[0]);
+    
+                $sql=$sql . " where " . join(" && ",$tmp);
+            }else{
+                $sql = $sql . $arg[0];
+            }
+        }
+
+        if(isset($arg[1])){
+            $sql = $sql . $arg[1];
+        }
+
+        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+    public function save($array){
+        if(isset($array['id'])){
+            //更新
+            $id=$array['id'];
+            unset($array['id']);
+            $tmp=$this->arrayToSqlArray($array);
+            $sql="update $this->table set ".join(",",$tmp)." where `id`='$id'";
+                                            
+        }else{
+            //新增
+            $cols=array_keys($array);
+            $sql="insert into $this->table (`".join("`,`",$cols)."`) values('".join("','",$array)."')";
+        }
+
+        //echo $sql;
+
+        $this->pdo->exec($sql);
+
+    }
+    public function del($id){
+        $sql="delete from $this->table ";
+        
+        if(is_array($id)){
+            $tmp=$this->arrayToSqlArray($id);
+
+            $sql = $sql . " where " .join(" && ",$tmp);
+
+        }else{
+            $sql = $sql . " where `id`='$id'";
+        }
+
+        return $this->pdo->exec($sql);
+    }
+
+    public function count(...$arg){
+        return $this->math('count',...$arg); //...為解構賦值
+    }
+
+    public function sum($col,...$arg){//...為不定參數
+        return $this->math('sum',$col,...$arg); //...為解構賦值
+    }
+    public function max($col,...$arg){
+        return $this->math('max',$col,...$arg); //...為解構賦值
+    }
+    public function min($col,...$arg){
+        return $this->math('min',$col,...$arg); //...為解構賦值
+    }
+    public function avg($col,...$arg){
+        return $this->math('avg',$col,...$arg); //...為解構賦值
+    }
+
+    private function arrayToSqlArray($array){
+        foreach($array as $key => $value){
+            $tmp[]="`$key`='$value'";
+        }
+
+        return $tmp;
+    }
+
+    private function math($math,...$arg){
+        switch($math){
+            case 'count':
+                $sql="select count(*) from $this->table ";
+                if(isset($arg[0])){
+                    $con=$arg[0]; 
+                }
+            break;
+            default:
+                $col=$arg[0];
+                if(isset($arg[1])){
+                    $con=$arg[1];
+                }
+                $sql="select $math($col) from $this->table ";
+
+        }
+
+        if(isset($con)){
+            if(is_array($con)){
+                $tmp=$this->arrayToSqlArray($con);
+                $sql=$sql . " where " .  join(" && ",$tmp);
+            }else{
+                $sql=$sql . $con;
+            }
+        }
+        //echo $sql;
+        return $this->pdo->query($sql)->fetchColumn();
+    }
+
+}
+
 function dd($array){
-    echo "<pre>";
-    print_r($array);
-    echo "</pre>";
+echo "<pre>";
+print_r($array);
+echo "</pre>";
 }
 
-function all($table,...$args){
-    global $pdo;
-    $sql="select * from $table";
-    if(isset($args[0])){
-        if(is_array($args[0])){
-            foreach($args[0] as $key => $value){
-                $tmp[]="`$key`='$value'";
-            }
-            $sql=$sql." where ".join(" && ",$tmp);
-        }else{
-            $sql=$sql . $args[0];
-        }
-    }
-    if(isset($args[1])){
-        $sql=$sql . $args[1];
-    }
-    return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function find($table,$id){
-    global $pdo;
-    $sql="select * from `$table`";
-    if(is_array($id)){
-        foreach($id as $key => $value){
-            $tmp[]="`$key`='$value'";
-        }
-        $sql=$sql." where ".join(" && ",$tmp);
-    }else{
-        $sql=$sql . " where `id`='$id'";
-    }
-    return $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
-}
-
-function update($table,$col,...$args){
-    global $pdo;
-    $sql="update $table set ";
-    if(is_array($col)){
-        foreach($col as $key => $value){
-            $tmp[]="`$key`='$value'";
-        }
-        $sql=$sql . join(",",$tmp);
-    }else{
-        echo "錯誤,請提供以陣列型式的更新資料";
-    }
-    if(isset($args[0])){
-        if(is_array($args[0])){
-            $tmp=[];
-            foreach($args[0] as $key => $value){
-                $tmp[]="`$key`='$value'";
-            }
-            $sql=$sql . " where ".join(" && ",$tmp);
-        }else{
-            $sql=$sql . " where `id`='{$args[0]}'";
-        }
-    }
-
-    echo $sql;
-    return $pdo->exec($sql);
-
-    function insert($table,$cols){
-        global $pdo;
-    
-        $keys=array_keys($cols);
-    
-        $sql="insert into $table (`" . join("`,`",$keys) . "`) values('" . join("','",$cols) . "')";
-
-        return $pdo->exec($sql);
-    }
-}
-
-function del($table,$id){
-    global $pdo;
-    $sql="delete from `$table` ";
-
-    if(is_array($id)){
-        foreach($id as $key => $value){
-            $tmp[]="`$key`='$value'";
-        }
-
-        $sql = $sql . " where " . join(" && ",$tmp);
-
-    }else{
-
-        $sql=$sql . " where `id`='$id'";
-    }
-
-    //echo $sql;
-    return $pdo->exec($sql);
+function to($url){
+    header("location:".$url);
 }
 
 function q($sql){
-    global $pdo;
-    //echo $sql;
-    return $pdo->query($sql)->fetchAll();
+    $pdo=new PDO("mysql:host=localhost;charset=utf8;dbname=vote",'root','');
+    return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function to($location){
-    header("location:$location");
-}
+// $Total=new DB('total');
+$Users=new DB('users');
+// $News=new DB('news');
+$Questions=new DB('questions');
+// $Log=new DB('log');
+
+// if(!isset($_SESSION['total'])){
+//     $today=$Total->find(['date'=>date("Y-m-d")]);
+//     if(empty($today)){
+//         //沒有今天的資料->新增
+//         $today=['date'=>date("Y-m-d"),'total'=>1];
+//     }else{
+//         //有今天的資料->更新    
+//         $today['total']++;
+//     }
+//     $Total->save($today);
+//     $_SESSION['total']=1;
+// }
+
+
 ?>

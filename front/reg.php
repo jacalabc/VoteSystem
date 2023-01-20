@@ -1,87 +1,95 @@
-<form action="../api/reg_user.php" method="post">
+<div class="container-fluid mt-3">
+    <div class="text-center">
+        <h1 style="color: #F2AD0C;">會員註冊</h1>
+    </div>
+
     <div class="container col-3">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" name="acc" id="account" placeholder="name@example.com">
-            <label for="account">帳號</label>
+            <input type="text" class="form-control" name="acc" id="acc" placeholder="name@example.com">
+            <label for="acc">帳號</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="password" class="form-control" name="pw" id="Password" placeholder="Password">
-            <label for="Password">密碼</label>
+            <input type="password" class="form-control" name="pw" id="pw" placeholder="Password">
+            <label for="pw">密碼</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="password" class="form-control" name="email" id="ConfirmPassword" placeholder="Password">
-            <label for="ConfirmPassword">確認密碼</label>
+            <input type="password" class="form-control" name="pw2" id="pw2" placeholder="Password">
+            <label for="pw2">確認密碼</label>
         </div>
-        <div class="form-floating">
-            <input type="email" class="form-control" id="email" placeholder="name@example.com">
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
             <label for="email">電子郵件</label>
         </div>
     </div>
-    <div class="text-center mt-5">
-        <button type="button" class="btn btn-outline-info me-5">重置</button>
-        <button type="submit" class="btn btn-outline-success">註冊</button>
+    <div class="text-center">
+        <button class="btn btn-outline-info me-5" onclick='reset()'>清除</button>
+        <button class="btn btn-outline-success" onclick='reg()'>註冊</button>
     </div>
-</form>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</div>
+
 <script>
-    $(function() {
+    function reset() {
+        $("#acc,#pw,#pw2,#email").val('')
+    }
 
-        const account = $('#account');
-        const password = $('#Password');
-        const ConfirmPassword = $('#ConfirmPassword');
-        const email = $('#email');
-        const resetBtn = $("button[type='button']");
-        const submitBtn = $("button[type='submit']");
+    function reg() {
+        let user = {
+            acc: $("#acc").val(),
+            pw: $("#pw").val(),
+            pw2: $("#pw2").val(),
+            email: $("#email").val(),
+        }
+        let EmailCharCheck = user.email.split("@")[1];
+        if (user.acc === '' || user.pw === '' || user.pw2 === '' || user.email === '') {
+            //有空白
+            Swal.fire({
+                icon: 'error',
+                title: '溫馨提示',
+                text: '請填寫所有欄位'
+            })
 
-        resetBtn.click(function() {
-            account.val('');
-            password.val('');
-            ConfirmPassword.val('');
-            email.val('');
-        })
-
-        submitBtn.click(function() {
-            if (account.val() == '') {
-                event.preventDefault();
+        } else {
+            //沒空白
+            if (user.pw == user.pw2) {
+                //相同
+                $.post("./api/chk_acc.php", user, (result) => {
+                    if (parseInt(result) === 1) {
+                        //重覆
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '溫馨提示',
+                            text: '帳號重複'
+                        })
+                    } else {                       
+                        if (user.email.indexOf("@") === -1 || EmailCharCheck == '') {
+                            // email 中沒有 @ 符號
+                            Swal.fire({
+                                icon: 'error',
+                                title: '溫馨提示',
+                                text: '請填寫正確的 Email 格式'
+                            })
+                        } else {
+                            // email 中有 @ 符號
+                            //不重覆
+                            $.post("./api/reg.php", user, () => {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '溫馨提示',
+                                    text: '註冊完成'
+                                })
+                                reset();
+                            })
+                        }
+                    }
+                })
+            } else {
+                //不相同
                 Swal.fire({
                     icon: 'error',
                     title: '溫馨提示',
-                    text: '帳號不可空白'
+                    text: '密碼與確認密碼不符',
                 })
             }
-            if (password.val() == '' || ConfirmPassword.val() == '') {
-                event.preventDefault();
-                Swal.fire({
-                    icon: 'error',
-                    title: '溫馨提示',
-                    text: '密碼不可空白'
-                })
-            }
-            if (password.val() != ConfirmPassword.val()) {
-                event.preventDefault();
-                Swal.fire({
-                    icon: 'error',
-                    title: '溫馨提示',
-                    text: '確認密碼與密碼不符，請重新輸入'
-                })
-            }
-            if (email.val() == '') {
-                event.preventDefault();
-                Swal.fire({
-                    icon: 'error',
-                    title: '溫馨提示',
-                    text: '電子郵件不可空白'
-                })
-            }
-            if (account.val() == '' && password.val() == '' && ConfirmPassword.val() == '' && email.val() == '') {
-                event.preventDefault();
-                Swal.fire({
-                    icon: 'error',
-                    title: '溫馨提示',
-                    text: '請填寫欄位 :D'
-                })
-            }
-        })
-    })
+        }
+    }
 </script>
