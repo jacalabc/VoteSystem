@@ -11,7 +11,7 @@
 <body>
 
     <div class="contaoner text-center pt-5 pb-5 HomeText">
-        <h1>這裡提供各種神奇問題投票，還請多多指教:D</h1>
+        <h1>這裡提供各種神奇問題投票，還請多多指教:D，請先成為會員喔</h1>
     </div>
 
 

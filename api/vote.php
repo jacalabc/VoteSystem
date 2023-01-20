@@ -1,13 +1,13 @@
 <?php include_once "base.php";
 
-$opt=$Que->find($_POST['opt']);
-$subject=$Que->find($opt['parent']);
+$opt=$Questions->find($_POST['opt']);
+$subject=$Questions->find($opt['parent']);
 
 $opt['count']++;
 $subject['count']++;
 
-$Que->save($opt);
-$Que->save($subject);
+$Questions->save($opt);
+$Questions->save($subject);
 
 to("../index.php?do=result&id={$subject['id']}");
 ?>

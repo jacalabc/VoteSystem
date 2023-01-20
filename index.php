@@ -29,15 +29,17 @@
 		if (isset($_SESSION['login'])) {
 			if ($_SESSION['login'] == 'admin') {
 		?>
-					歡迎，<?= $_SESSION['login']; ?>
-					<button><a href='back.php'>管理</a></button>|
-					<button><a href="./api/logout.php">登出</a></button>
+				<div class="text-center mb-3">
+					<span style="font-size: 20px;">歡迎，<span> <?= $_SESSION['login']; ?>
+							<a href='back.php' class="btn btn-primary">管理</a>
+							<a href="./api/logout.php" class="btn btn-secondary">登出</a>
+				</div>
 			<?php
 			} else {
 			?>
 				<div class="text-center mb-3">
 					<span style="font-size: 20px;">歡迎，<span> <?= $_SESSION['login']; ?>
-					<a href="./api/logout.php" class="btn btn-secondary">登出</a>
+							<a href="./api/logout.php" class="btn btn-secondary">登出</a>
 				</div>
 			<?php
 			}

@@ -1,5 +1,5 @@
 <div class="text-center">
-    <h1 style="color: #F2AD0C;">找回密碼</h1>
+    <h1>找回密碼</h1>
 </div>
 <div>
     <div class="text-center" style="font-size: 20px;">請輸入信箱以查詢密碼</div>

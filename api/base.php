@@ -159,24 +159,9 @@ function q($sql){
     return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// $Total=new DB('total');
-$Users=new DB('users');
-// $News=new DB('news');
-$Questions=new DB('questions');
-// $Log=new DB('log');
 
-// if(!isset($_SESSION['total'])){
-//     $today=$Total->find(['date'=>date("Y-m-d")]);
-//     if(empty($today)){
-//         //沒有今天的資料->新增
-//         $today=['date'=>date("Y-m-d"),'total'=>1];
-//     }else{
-//         //有今天的資料->更新    
-//         $today['total']++;
-//     }
-//     $Total->save($today);
-//     $_SESSION['total']=1;
-// }
+$Users=new DB('users');
+$Questions=new DB('questions');
 
 
 ?>

@@ -1,5 +1,4 @@
-<fieldset>
-    <legend>新增問卷</legend>
+<h1 class="mt-3">新增問卷</h1>
 <form action="./api/add_que.php" method="post">
 <div class="subject">
     問卷名稱
@@ -16,7 +15,7 @@
 <input type="reset" value="清空">
 <input type="button" value="更多" onclick="moreOpt()">
 </form>
-</fieldset>
+
 <script>
 function moreOpt(){
     let opt=`<div>
