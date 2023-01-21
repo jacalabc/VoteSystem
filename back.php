@@ -24,7 +24,7 @@
 		</div>
 		<div>
 			<div class="text-center mt-3">
-				<a href="?do=admin" class="btn btn-warning">帳號管理</a>
+				<a href="?do=admin" class="btn btn-warning me-3">帳號管理</a>
 				<a href="?do=que" class="btn btn-info">問卷管理</a>
 			</div>
 			<div>
@@ -36,7 +36,7 @@
 						?>
 								<div class="mt-3">
 									<span style="font-size: 20px;">歡迎，</span><?= $_SESSION['login']; ?>
-									<a href='back.php' class="btn btn-primary">管理</a>
+									<a href='back.php' class="btn btn-primary me-3">管理</a>
 									<a href="./api/logout.php" class="btn btn-secondary">登出</a>
 								</div>
 							<?php

@@ -1,6 +1,6 @@
 <?php
-$subject=$Que->find($_GET['id']);
-$options=$Que->all(['parent'=>$_GET['id']]);
+$subject=$Questions->find($_GET['id']);
+$options=$Questions->all(['parent'=>$_GET['id']]);
 ?>
 
 <fieldset>

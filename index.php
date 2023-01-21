@@ -40,6 +40,7 @@
 				<div class="text-center mb-3">
 					<span style="font-size: 20px;">歡迎，<span> <?= $_SESSION['login']; ?>
 							<a href="./api/logout.php" class="btn btn-secondary">登出</a>
+							<a href="?do=que" class="btn btn-info">我要投票</a>
 				</div>
 			<?php
 			}
