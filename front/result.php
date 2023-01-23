@@ -1,39 +1,55 @@
 <?php
-$subject=$Questions->find($_GET['id']);
-$options=$Questions->all(['parent'=>$_GET['id']]);
+$subject = $Questions->find($_GET['id']);
+$options = $Questions->all(['parent' => $_GET['id']]);
 ?>
 
-<fieldset>
-<legend>目前位置：首頁 > 問卷調查 > <?=$subject['text'];?></legend>
+<h1 class="text-center">問卷調查統計 : <?= $subject['text']; ?></h1>
 
-    <h3><?=$subject['text'];?></h3>
-    <?php
+<div class="container-fluid d-flex justify-content-center mt-3">
 
-    foreach($options as $opt){
-        $vote=$opt['count'];
-        $all=($subject['count']==0)?1:$subject['count'];
-        
-        $rate=$vote/$all;
+    <div class="col-6">
 
-        echo "<div style='display:flex;align-items:center;margin:10px 0'>";
-        echo    "<div style='width:50%'>";
-        echo    $opt['text'];
-        echo    "</div>";
-        echo    "<div style='width:50%'>";
-        echo        "<span style='display:inline-block;width:";
-        echo        70*$rate;
-        echo       "%;height:1.1rem;background-color:#ccc'></span>";
-        echo        "<span>{$vote}票(";
-        echo        round($rate*100,1);
-        echo        "%)</span>";
-        echo    "</div>";
-        echo "</div>";
-    }
+        <table class='table'>
 
-    ?>
+            <thead>
+                <tr>
+                    <th scope='col'>選項</th>
+                    <th scope='col'>結果統計</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
 
-    <div class="ct">
-        <button onclick="location.href='?do=que'">返回</button>
+                foreach ($options as $opt) {
+                    $vote = $opt['count'];
+                    $all = ($subject['count'] == 0) ? 1 : $subject['count'];
+
+                    $rate = $vote / $all;
+
+
+                    echo    "<tr>";
+                    echo        "<td>";
+                    echo            $opt['text'];
+                    echo        "</td>";
+                    echo        "<td>";
+                    echo            $vote."票";
+                    echo            "<div class='progress'>";
+                    echo                "<div class='progress-bar bg-info' role='progressbar' aria-label='Info example' style='width:" . round($rate * 100, 1) . "%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>";
+                    echo                    round($rate * 100, 1) . "%";
+                    echo                "</div>";
+                    echo            "</div>";
+                    echo        "</td>";
+                    echo    "</tr>";
+                }
+
+                ?>
+            </tbody>
+        </table>
+
     </div>
 
-</fieldset>
+</div>
+
+<div class="text-center">
+    <a href="?do=que" class="btn btn-warning">返回問卷列表</a>
+</div>

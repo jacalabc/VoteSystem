@@ -51,7 +51,10 @@
 					<a href="?do=login" class="btn btn-outline-info me-3">會員登入</a>
 				</li>
 				<li class="nav-item">
-					<a href="?do=reg" class="btn btn-outline-warning">會員註冊</a>
+					<a href="?do=reg" class="btn btn-outline-warning me-3">會員註冊</a>
+				</li>
+				<li class="nav-item">
+					<a href="?do=que" class="btn btn-outline-light me-3">我要投票</a>
 				</li>
 			</ul>
 		<?php

@@ -3,23 +3,23 @@ $subject=$Questions->find($_GET['id']);
 $options=$Questions->all(['parent'=>$_GET['id']]);
 ?>
 
-<fieldset>
-<legend>目前位置：首頁 > 問卷調查 > <?=$subject['text'];?></legend>
 <form action="./api/vote.php" method="post">
-    <h3><?=$subject['text'];?></h3>
+    <h1 class="text-center">問卷 : <?=$subject['text'];?></h1>
     <?php
 
     foreach($options as $opt){
-        echo "<p>";
-        echo "<input type='radio' name='opt' value='{$opt['id']}'>";
+        echo "<p class='text-center'>";
+        echo "<input type='radio' name='opt' value='{$opt['id']}'> &nbsp";
         echo $opt['text'];
         echo "</p>";
     }
 
     ?>
 
-    <div class="ct">
-        <input type="submit" value="我要投票">
+    <div class="text-center">
+        <input type="submit" value="我要投票" class="btn btn-success">
+        <a href="?do=que">
+            <input type="button" value="回問卷列表" class="btn btn-warning">
+        </a>
     </div>
 </form>
-</fieldset>
