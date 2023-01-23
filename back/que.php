@@ -18,7 +18,7 @@
 
             <input type="submit" class="btn btn-success me-3" value="新增">
             <input type="reset" class="btn btn-warning me-3" value="清空">
-            <input type="button" class="btn btn-info" value="更多" onclick="moreOpt()">
+            <input type="button" class="btn btn-info moreOpt" value="更多" onclick="moreOpt()">
         </form>
 
     </div>
@@ -26,6 +26,18 @@
 </div>
 
 <script>
+    // $(function() {
+    //     const moreOpt = $('.moreOpt');
+    //     const options = $('.options');
+    //     moreOpt.click(function() {
+    //         let opt = `<div class="input-group mt-3">
+    //                     <span class="input-group-text" id="inputGroup-sizing-default">選項</span>
+    //                     <input type="text" class="form-control" name="option[]" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+    //                </div>`;
+    //         $(".options").append(opt);
+    //     })
+    // })
+
     function moreOpt() {
         let opt = `<div class="input-group mt-3">
                         <span class="input-group-text" id="inputGroup-sizing-default">選項</span>
