@@ -11,16 +11,22 @@ include_once "./api/base.php";
             <input type="text" class="form-control" name="acc" id="acc" value="<?=$_SESSION['login'];?>" placeholder="填寫你的帳號:D">
             <label for="acc">帳號</label>
         </div>
+       <?php
+            $acc = array_column($Users->all(), 'acc');
+            // print_r($acc);
+            // 找key值
+            $key = array_search($_SESSION['login'],$acc);  
+        ?>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" name="pw" id="pw" value="" placeholder="填寫你的密碼:D">
+            <input type="text" class="form-control" name="pw" id="pw" value="<?=array_column($Users->all(), 'pw')[$key];?>" placeholder="填寫你的密碼:D">
             <label for="pw">密碼</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="password" class="form-control" name="pw2" id="pw2" value="" placeholder="確認你的密碼:D">
+            <input type="password" class="form-control" name="pw2" id="pw2" value="<?=array_column($Users->all(), 'pw')[$key];?>" placeholder="確認你的密碼:D">
             <label for="pw2">確認密碼</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="email" class="form-control" name="email" id="email" value="" placeholder="name@example.com">
+            <input type="email" class="form-control" name="email" id="email" value="<?=array_column($Users->all(), 'email')[$key];?>" placeholder="name@example.com">
             <label for="email">電子郵件</label>
         </div>
     </div>
@@ -78,7 +84,7 @@ include_once "./api/base.php";
                                 Swal.fire({
                                     icon: 'success',
                                     title: '溫馨提示',
-                                    text: '註冊完成'
+                                    text: '修改完成'
                                 })
                                 reset();
                             })
