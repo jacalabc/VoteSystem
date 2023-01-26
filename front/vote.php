@@ -2,20 +2,20 @@
 $subject=$Questions->find($_GET['id']);
 $options=$Questions->all(['parent'=>$_GET['id']]);
 ?>
+<div class="container d-flex justify-content-center">
 
 <form action="./api/vote.php" method="post">
     <h1 class="text-center">問卷 : <?=$subject['text'];?></h1>
-    <?php
+         <?php
 
     foreach($options as $opt){
-        echo "<p class='text-center'>";
+        echo "<p class='text-start'>";
         echo "<input type='radio' name='opt' value='{$opt['id']}'> &nbsp";
         echo $opt['text'];
         echo "</p>";
+
     }
-
     ?>
-
     <div class="text-center">
         <input type="submit" value="我要投票" class="btn btn-success">
         <a href="?do=que">
@@ -23,3 +23,6 @@ $options=$Questions->all(['parent'=>$_GET['id']]);
         </a>
     </div>
 </form>
+
+
+</div>
