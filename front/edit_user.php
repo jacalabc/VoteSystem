@@ -12,13 +12,14 @@ include_once "./api/base.php";
             <label for="acc">帳號</label>
         </div>
        <?php
+            // 找acc欄位
             $acc = array_column($Users->all(), 'acc');
             // print_r($acc);
             // 找key值
             $key = array_search($_SESSION['login'],$acc);  
         ?>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" name="pw" id="pw" value="<?=array_column($Users->all(), 'pw')[$key];?>" placeholder="填寫你的密碼:D">
+            <input type="password" class="form-control" name="pw" id="pw" value="<?=array_column($Users->all(), 'pw')[$key];?>" placeholder="填寫你的密碼:D">
             <label for="pw">密碼</label>
         </div>
         <div class="form-floating mb-3">
@@ -46,8 +47,9 @@ include_once "./api/base.php";
             acc: $("#acc").val(),
             pw: $("#pw").val(),
             pw2: $("#pw2").val(),
-            email: $("#email").val(),
+            email: $("#email").val(),           
         }
+
         let EmailCharCheck = user.email.split("@")[1];
         if (user.acc === '' || user.pw === '' || user.pw2 === '' || user.email === '') {
             //有空白
