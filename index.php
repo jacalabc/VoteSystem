@@ -21,7 +21,7 @@
 <body>
 
 	<div class="text-center">
-		<h1 class="WebTitle">做不出來:D</h1>
+		<h1 class="WebTitle">投票</h1>
 	</div>
 
 	<span class="text-center">
