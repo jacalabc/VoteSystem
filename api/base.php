@@ -60,8 +60,7 @@ class DB{
             $id=$array['id'];
             unset($array['id']);
             $tmp=$this->arrayToSqlArray($array);
-            $sql="update $this->table set ".join(",",$tmp)." where `id`='$id'";
-                                            
+            $sql="update $this->table set ".join(",",$tmp)." where `id`='$id'";                                           
         }else{
             //新增
             $cols=array_keys($array);
@@ -72,6 +71,27 @@ class DB{
 
         $this->pdo->exec($sql);
 
+    }
+    public function saveImg($array){
+        if(isset($array['id']['image_name']['image_size'])){
+            //更新
+            $id=$array['id'];
+            unset($array['id']);
+            $array['image_name'] = $_FILES['image']['name'];
+            $array['image_size'] = $_FILES['image']['size'];
+            $tmp=$this->arrayToSqlArray($array);
+            $sql="update $this->table set ".join(",",$tmp)." where `id`='$id'";                                           
+        }else{
+            //新增
+            $array['image_name'] = $_FILES['image']['name'];
+            $array['image_size'] = $_FILES['image']['size'];
+            $cols=array_keys($array);
+            $sql="insert into $this->table (`".join("`,`",$cols)."`) values('".join("','",$array)."')";
+        }
+        
+        //echo $sql;
+
+        $this->pdo->exec($sql);
     }
     public function del($id){
         $sql="delete from $this->table ";
@@ -162,6 +182,7 @@ function q($sql){
 
 $Users=new DB('users');
 $Questions=new DB('questions');
+$Images=new DB('images');
 
 
 ?>
