@@ -2,14 +2,16 @@
 include_once "./api/base.php";
 
            // 找acc欄位
-            // $acc = array_column($Users->all(), 'acc');
-            $accAllData = $Users->find(['acc'=>$_SESSION['login']]);
+            // $acc = array_column($Users->all(), 'acc');           
             // print_r($acc);
             // 找id欄位
             // $id = array_column($Users->all(),'id');
             // print_r($id);
             // 找key值
             // $key = array_search($_SESSION['login'],$acc);
+
+            // 抓取目前登入的帳號的所有資料
+            $accAllData = $Users->find(['acc'=>$_SESSION['login']]);
 ?>
 <div class="container-fluid mt-3">
     <div class="text-center">

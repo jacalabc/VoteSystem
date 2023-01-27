@@ -4,10 +4,10 @@ include_once "./api/base.php";
 $image_name = array_column($Images->all(), 'image_name');
 //  print_r($image_name);
 // 找id欄位
-$id = array_column($Images->all(), 'id');
+// $id = array_column($Images->all(), 'id');
 // print_r($id);
 // 找key值
-$key = array_search($id, $image_name);
+// $key = array_search($id, $image_name);
 ?>
 <!DOCTYPE html>
 <html lang="en">
