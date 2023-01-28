@@ -67,22 +67,14 @@ class DB{
 
     }
     public function saveImg($array){
-        if(isset($array['id']['image_name']['image_size'])){
-            //更新
-            $id=$array['id'];
-            unset($array['id']);
-            $array['image_name'] = $_FILES['image']['name'];
-            $array['image_size'] = $_FILES['image']['size'];
-            $tmp=$this->arrayToSqlArray($array);
-            $sql="update $this->table set ".join(",",$tmp)." where `id`='$id'";                                           
-        }else{
+        // 檢查是否有所需欄位               
+        if(isset($array['image_name']) && isset($array['image_size'])){
             //新增
             $array['image_name'] = $_FILES['image']['name'];
             $array['image_size'] = $_FILES['image']['size'];
             $cols=array_keys($array);
             $sql="insert into $this->table (`".join("`,`",$cols)."`) values('".join("','",$array)."')";
-        }
-        
+        }    
         //echo $sql;
 
         $this->pdo->exec($sql);

@@ -12,7 +12,9 @@ if($_FILES['image']['error']>0){
         echo "檔案已存在，請勿重複上傳相同檔案";
     }else{
         move_uploaded_file($_FILES['image']['tmp_name'],"../upload/".$_FILES['image']['name']);
-        $Images->saveImg(['id'=>$_POST,'image_name'=>$_FILES['image']['name'],'image_size'=>$_FILES['image']['size']]);           
+        // 沒有用到id這個欄位所以取消
+        // $Images->saveImg(['id'=>$_POST,'image_name'=>$_FILES['image']['name'],'image_size'=>$_FILES['image']['size']]);
+        $Images->saveImg(['image_name'=>$_FILES['image']['name'],'image_size'=>$_FILES['image']['size']]); 
     }   
     to("../index.php");
 }
